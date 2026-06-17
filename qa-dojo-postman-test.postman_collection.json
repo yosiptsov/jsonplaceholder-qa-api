@@ -1,0 +1,460 @@
+{
+	"info": {
+		"_postman_id": "9cc20028-3ecd-4b9b-97a0-d5c79d4cc60d",
+		"name": "qa-dojo-postman-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48518877"
+	},
+	"item": [
+		{
+			"name": "Auth base on /profile",
+			"item": [
+				{
+					"name": "<negative> noTokenExists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Response body contains 'statusCode': 401\", function () {",
+									"    pm.expect(pm.response.json().statusCode).to.equal(401);",
+									"});",
+									"",
+									"pm.test(\"Response body contains 'message': 'Unauthorized'\", function () {",
+									"    pm.expect(pm.response.json().message).to.eql('Unauthorized');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.escuelajs.co/api/v1/auth/profile",
+							"protocol": "https",
+							"host": [
+								"api",
+								"escuelajs",
+								"co"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "<negative> incorrectToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Response body contains 'statusCode': 401\", function () {",
+									"    pm.expect(pm.response.json().statusCode).to.equal(401);",
+									"});",
+									"",
+									"pm.test(\"Response body contains 'message': 'Unauthorized'\", function () {",
+									"    pm.expect(pm.response.json().message).to.eql('Unauthorized');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Incorrect_Token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.escuelajs.co/api/v1/auth/profile",
+							"protocol": "https",
+							"host": [
+								"api",
+								"escuelajs",
+								"co"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "<positive> correctToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Name is Jhon\", function () {",
+									"    pm.expect(json.name).to.eql('Jhon');",
+									"});",
+									"",
+									"pm.test(\"Email is john@mail.com\", function () {",
+									"    pm.expect(json.email).to.eql('john@mail.com');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.escuelajs.co/api/v1/auth/profile",
+							"protocol": "https",
+							"host": [
+								"api",
+								"escuelajs",
+								"co"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"pm.test(\"Response is an object\", function (){",
+							"    pm.expect(pm.response.json()).to.be.an('object');",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "filterByPrice",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"All products have price = 100\", function () {",
+									"    let json = pm.response.json();",
+									"    for (const product of json) {",
+									"        pm.expect(product.price).to.eql(100);",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"YO new product 1\",\n  \"price\": 10,\n  \"description\": \"A description for a YO new product 1\",\n  \"categoryId\": 1,\n  \"images\": [\"https://placehold.co/600x400\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}api/v1/products/?price=100",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"v1",
+								"products",
+								""
+							],
+							"query": [
+								{
+									"key": "price",
+									"value": "100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filterByMinMaxPrice",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let minPrice = Number(pm.collectionVariables.get(\"minPrice\"));",
+									"let maxPrice = Number(pm.collectionVariables.get(\"maxPrice\"));",
+									"let json = pm.response.json();",
+									"",
+									"pm.test(`All products have price within ${minPrice} and ${maxPrice}`, function () {",
+									"    for (const product of json) {",
+									"        pm.expect(product.price).to.be.within(minPrice, maxPrice);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"YO new product 1\",\n  \"price\": 10,\n  \"description\": \"A description for a YO new product 1\",\n  \"categoryId\": 1,\n  \"images\": [\"https://placehold.co/600x400\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}api/v1/products/?price_min={{minPrice}}&price_max={{maxPrice}}",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"v1",
+								"products",
+								""
+							],
+							"query": [
+								{
+									"key": "price_min",
+									"value": "{{minPrice}}"
+								},
+								{
+									"key": "price_max",
+									"value": "{{maxPrice}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"pm.test(\"Response is an object\", function (){",
+							"    pm.expect(pm.response.json()).to.be.an('array');",
+							"});"
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"requests": {},
+				"exec": [
+					"async function takeRefreshToken() {",
+					"    try {",
+					"        const response = await pm.sendRequest({",
+					"            url: \"https://api.escuelajs.co/api/v1/auth/login\",",
+					"            method: \"POST\",",
+					"            header: {",
+					"                \"Content-Type\": \"application/json\"",
+					"            },",
+					"            body: {",
+					"                mode: \"raw\",",
+					"                raw: JSON.stringify({",
+					"                    email: \"john@mail.com\",",
+					"                    password: \"changeme\"",
+					"                })",
+					"            }",
+					"        });",
+					"",
+					"        const resp = response.json();",
+					"        return resp.refresh_token;",
+					"    } catch (err) {",
+					"        console.error(\"Error getting refresh token:\", err);",
+					"        throw err;",
+					"    }",
+					"}",
+					"",
+					"async function takeAccessToken(refreshToken) {",
+					"    try {",
+					"        const response = await pm.sendRequest({",
+					"            url: \"https://api.escuelajs.co/api/v1/auth/refresh-token\",",
+					"            method: \"POST\",",
+					"            header: {",
+					"                \"Content-Type\": \"application/json\"",
+					"            },",
+					"            body: {",
+					"                mode: \"raw\",",
+					"                raw: JSON.stringify({",
+					"                    refreshToken: refreshToken",
+					"                })",
+					"            }",
+					"        });",
+					"",
+					"        const resp = response.json();",
+					"        return resp.access_token;",
+					"    } catch (err) {",
+					"        console.error(\"Error getting access token:\", err);",
+					"        throw err;",
+					"    }",
+					"}",
+					"",
+					"(async () => {",
+					"    const refreshToken = await takeRefreshToken();",
+					"    const accessToken = await takeAccessToken(refreshToken);",
+					"    pm.collectionVariables.set('accessToken', accessToken);",
+					"    console.log(\"Access token obtained:\", accessToken);",
+					"})();"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "randomProductName",
+			"value": ""
+		},
+		{
+			"key": "newProductId",
+			"value": ""
+		},
+		{
+			"key": "baseURL",
+			"value": ""
+		},
+		{
+			"key": "refreshToken",
+			"value": ""
+		},
+		{
+			"key": "accessToken",
+			"value": ""
+		},
+		{
+			"key": "minPrice",
+			"value": ""
+		},
+		{
+			"key": "maxPrice",
+			"value": ""
+		}
+	]
+}
