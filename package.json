@@ -6,9 +6,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Yurii Osiptsov",
-  "license": "ISC",
-  "dependencies": {
-    "newman": "^6.2.2"
-  },
-  "devDependencies": {}
+  "license": "ISC"
 }
